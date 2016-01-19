@@ -48,6 +48,12 @@ class Player
       angle += 0.05;
     }
 
+    if(keys[' '])
+    {
+     
+     
+    }
+    
     if (x>width-40)
     {
       x=width-40;
@@ -56,5 +62,14 @@ class Player
     {
       x=40;
     }
+    
+    //if(angle == PI)
+    //{
+    //  angle=180;
+    //}
+    //if(angle == 0)
+    //{
+    //  angle=0;
+    //}
   }
 }
