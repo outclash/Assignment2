@@ -1,37 +1,42 @@
 class Bullet 
 {
-  
+
   PVector pos;
-  float angle1;
+  PVector MoveObj;
+  float angle;
   int speed;
-    PVector forward;
-  Bullet(int x, int y, float angle)
+  int size;
+  Bullet()
   {
-   pos = new PVector(x,y);
-   angle1 = angle;
-   speed = 10;
-   forward = new PVector(0, -1);
+    speed = 10;
+    MoveObj = new PVector();
+    pos = new PVector(0,0);
+    size = 10;
   }
-  
+
   void drawBullet()
   {
-   
+    bulletfired();
+
     pushMatrix();
-    translate(pos.x,pos.y);
-    rotate(angle1);
-    line(0,0,0,-10);
+    translate(pos.x, pos.y);
+    rotate(angle);
+    strokeWeight(5);
+    line(0, 0, 0, size);
     popMatrix();
-     
-println(angle1,pos.x,pos.y);
   }
-  
+
   void bulletfired()
   {
-    forward.x = sin(angle1);
-    forward.y =  -cos(angle1);
-      
-    forward.mult(speed);
-    pos.add(forward);
+    MoveObj.x = sin(angle);
+    MoveObj.y =  -cos(angle);
+    MoveObj.mult(speed);
+    pos.add(MoveObj);
+  
+    if (pos.x < 0 || pos.y < 14 || pos.x > width || pos.y > height)
+    {
+      bullets.remove(this);
+    }
     
   }
 }
