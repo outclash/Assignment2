@@ -10,14 +10,16 @@ int numMonster=10;
 void draw()
 {
   background(0);
-  player.drawPlayer();
-
-  addmonsters();
 
   for (int i = bullets.size() - 1; i >= 0; i --)
   {
     bullets.get(i).drawBullet();
   }
+
+  player.drawPlayer();
+
+  addmonsters();
+
 
   collision();
 
@@ -74,7 +76,7 @@ void collision()
       Monster M = monsters.get(j);
 
       // Bounding circle collisions
-      if (B.pos.dist(M.pos) < B.size/2 + M.size/2)
+      if (B.pos.dist(M.pos) < (B.img[0].height/2) + M.size/2)
       {
         monsters.remove(M);
         bullets.remove(B);
