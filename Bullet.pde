@@ -6,14 +6,18 @@ class Bullet
   float angle;
   int speed;
   int size;
-  PImage[] img = new PImage[1];
+  PImage[] img;
+  
   Bullet()
   {
+    
+    img = new PImage[1];
     img[0] = loadImage("bullet.png");
     speed = 10;
     MoveObj = new PVector();
-    pos = new PVector(0,0);
+    pos = new PVector(0, 0);
     size = 10;
+  
   }
 
   void drawBullet()
@@ -24,7 +28,7 @@ class Bullet
     translate(pos.x, pos.y);
     rotate(angle);
     strokeWeight(5);
-    image(img[0],0,0);
+    image(img[0], 0, 0);
     popMatrix();
   }
 
@@ -34,11 +38,12 @@ class Bullet
     MoveObj.y =  -cos(angle);
     MoveObj.mult(speed);
     pos.add(MoveObj);
-  
+   
     if (pos.x < 0 || pos.y < 0 || pos.x > width || pos.y > height)
     {
       bullets.remove(this);
     }
-    
   }
+  
+
 }

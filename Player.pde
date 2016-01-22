@@ -3,11 +3,13 @@ class Player
   PVector pos;
   float angle;
   int bulletInterval;
-  PImage[] img = new PImage[2];
-  
+  PImage[] img;
+  AudioPlayer audio;
   Player()
   {
-    pos = new PVector(width/2,475);
+    audio = minim.loadFile("Sound/TankFiring-SoundBible.com-998264747.wav");
+    pos = new PVector(width/2, 475);
+    img = new PImage[2];
     img[0] = loadImage("body.png");
     img[1] = loadImage("weapon.png");
     angle = 0;
@@ -17,16 +19,16 @@ class Player
   void drawPlayer()
   {
     movePlayer();
-    image(img[0],pos.x-img[0].width/2,pos.y-img[0].height/2); 
-   
+    image(img[0], pos.x-img[0].width/2, pos.y-img[0].height/2); 
+
     pushMatrix();
-    translate(pos.x,pos.y);
+    translate(pos.x, pos.y);
     rotate(angle);
     stroke(122);
     strokeWeight(1);
     line(0, 0, angle, -700);
-    
-     image(img[1],-img[1].width/2,-img[1].height+20);
+
+    image(img[1], -img[1].width/2, -img[1].height+20);
     popMatrix();
   }
 
@@ -58,6 +60,7 @@ class Player
       bullet.angle = angle;
       bullets.add(bullet);
       bulletInterval = 0;
+      sound();
     }
 
     bulletInterval++;
@@ -71,7 +74,7 @@ class Player
       pos.x=40;
     }
 
-   // println(angle);
+    // println(angle);
     if (angle > 1.5)
     {
       angle=1.5;
@@ -80,5 +83,11 @@ class Player
     {
       angle= -1.5;
     }
+  }
+
+  void sound()
+  {
+    audio.rewind();
+    audio.play();
   }
 }

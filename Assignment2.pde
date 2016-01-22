@@ -1,9 +1,14 @@
+import ddf.minim.*;
+Minim minim;
+
 Player player;
 
 void setup()
 {
   size(500, 500);
+  minim = new Minim(this);
   player = new Player();
+ 
 } 
 int numMonster=10;
 
@@ -76,8 +81,9 @@ void collision()
       Monster M = monsters.get(j);
 
       // Bounding circle collisions
-      if (B.pos.dist(M.pos) < (B.img[0].height/2) + M.size/2)
+      if (B.pos.dist(M.pos) < (B.size) + M.size)
       {
+        println(dist(B.pos.x,B.pos.y,M.pos.x,M.pos.y),(B.size/2) + M.size/2);
         monsters.remove(M);
         bullets.remove(B);
         score = (int)M.bonus + M.score + score;
