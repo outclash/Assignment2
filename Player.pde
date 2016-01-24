@@ -18,10 +18,10 @@ class Player extends GameObjects
   {
     pushMatrix();
     translate(pos.x, pos.y);
+    image(img[0], -img[0].width/2, -img[0].height/2);
     rotate(angle);
     stroke(122);
     strokeWeight(1);
-    image(img[0], -img[0].width/2, -img[0].height/2); 
     line(0, 0, angle, fireguideline);
     image(img[1], -img[1].width/2, -img[1].height+20);
     popMatrix();
@@ -51,7 +51,7 @@ class Player extends GameObjects
       angle += 0.01;
     }
 
-    if (keys[' '] && bulletInterval > 35)
+    if (keys[' '] && bulletInterval > 10)
     {
       Bullet bullet = new Bullet();
       bullet.pos.x = pos.x;

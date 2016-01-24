@@ -8,15 +8,6 @@ class Monster extends GameObjects
 
   Monster()
   {
-    changeFrame = 0;
-    speed=random(0, 0.2);
-    size = 15;
-    zomScore = 10;
-    bonus = speed * 10;
-    pos = new PVector(random(10, 490), 0);
-
-    audio[0] = minim.loadFile("Sound/Zombie Moan-SoundBible.com-565291980.wav");
-
     img = new PImage[1];
     zomMove = new PImage[1][3];
     img[0] = loadImage("Zombies/5ZombieSpriteSheet1.png");
@@ -26,6 +17,13 @@ class Monster extends GameObjects
     {
       zomMove[0][i] = img[0].get( 0 + (32 * i), 0, 32, 34);
     }
+
+    changeFrame = 0;
+    speed=random(0, 0.2);
+    size = 15;
+    zomScore = 10;
+    bonus = speed * 10;
+    pos = new PVector(random(zomMove[0][0].width/2, width - zomMove[0][0].width/2), 0);
   }
 
   void drawMonster()
@@ -33,7 +31,7 @@ class Monster extends GameObjects
     pushMatrix();
     translate(pos.x, pos.y);
     //rotate(angle);
-    image (zomMove[0][(int)changeFrame], -zomMove[0][0].width, -zomMove[0][0].height);
+    image (zomMove[0][(int)changeFrame], -zomMove[0][0].width/2, -zomMove[0][0].height/2);
     popMatrix();
 
     moveMonster();
@@ -51,12 +49,12 @@ class Monster extends GameObjects
 
     if (spawn)
     {
-      audio[0].rewind();
-      audio[0].play();
+      audio[1].rewind();
+      audio[1].play();
       spawn = false;
     }
 
-    if (pos.y > height)
+    if (pos.y > height - 50)
     {
       monsters.remove(this);
     }
