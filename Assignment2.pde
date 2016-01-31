@@ -1,26 +1,35 @@
 import ddf.minim.*;
 Minim minim;
 Player player;
-int numMonster=10;
+//int numMonster=10;
 int score;
+int[] lvl = {15, 30, 70};
+int nextlvl;
+int gameComplete;
 int cenX, cenY;
 PImage[] menu = new PImage[4];
+PImage bg;
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 ArrayList<Monster> monsters = new ArrayList<Monster>();
 boolean play = false;
 boolean exit = false;
+boolean lvlclear = false;
 boolean[] keys = new boolean[512];
 AudioPlayer[] audio;
 
 void setup()
 {
   size(500, 550);
+  nextlvl = 0;
+  gameComplete = 0;
   cenX = width/2;
   cenY = height/2;
   minim = new Minim(this);
   player = new Player();
   audio = new AudioPlayer[5];
   audio[0] = minim.loadFile("Sound/Zombie Gets Attacked-SoundBible.com-20348330.wav");
+  bg = loadImage("6dbfe6d75bf2051b5cf5e3079ce89f8d copy.png");
+  bg.resize(width, height);
   menu[0] = loadImage("Gamemenu.png");
   for (int i = 1; i < 4; i++)
   {
@@ -30,7 +39,7 @@ void setup()
 
 void draw()
 {
-  background(0);
+  background(bg);
 
   if (!play)
   {
@@ -41,7 +50,8 @@ void draw()
     if (mouseX > cenX -menu[1].width/2 &&
       mouseY > cenY -50 -menu[1].height/2 &&
       mouseX < cenX -menu[1].width/2 + menu[1].width &&
-      mouseY < cenY -50 -menu[1].height/2 + menu[1].height || keys['P'])
+      mouseY < cenY -50 -menu[1].height/2 + menu[1].height 
+      || keys['P'])
     {
       noTint();
       image(menu[1], cenX -menu[1].width/2, cenY -50 -menu[1].height/2);
@@ -54,11 +64,12 @@ void draw()
     if (mouseX > cenX -menu[2].width/2 &&
       mouseY > cenY -menu[2].height/2 &&
       mouseX < cenX -menu[2].width/2 + menu[2].width &&
-      mouseY < cenY -menu[2].height/2 + menu[2].height)
+      mouseY < cenY -menu[2].height/2 + menu[2].height 
+      || keys['E'])
     {
       noTint();
       image(menu[2], cenX -menu[2].width/2, cenY  -menu[1].height/2);
-      if (mousePressed)
+      if (mousePressed || keys['E'])
       {
         exit = true;
       }
@@ -77,7 +88,8 @@ void draw()
     if (mouseX > 400 &&
       mouseY > 523 &&
       mouseX < 400 + menu[2].width &&
-      mouseY < 523 + 25 || keys['M'])
+      mouseY < 523 + 25 
+      || keys['M'])
     {
       noTint();
       image(menu[3], 400, 523, menu[2].width, 25);
@@ -116,23 +128,36 @@ void keyReleased()
 
 void addmonsters()
 {
-  for (int i = 0; i < numMonster; i++)
+  if (gameComplete != lvl.length)
   {
-    monsters.add(new Monster());
-
-    if (monsters.size() == numMonster)
+    for (int i = 0; i < lvl[nextlvl]; i++)
     {
-      numMonster = 0;
-    }
-  }
-  for (int i = monsters.size() -1; i >= 0; i--)
-  {
-    monsters.get(i).drawMonster();
-  }
+      monsters.add(new Monster());
 
-  if (monsters.size() == 0)
+      if (monsters.size() == lvl[nextlvl])
+      {
+        lvl[nextlvl] = 0;
+      }
+    }
+    for (int i = monsters.size() -1; i >= 0; i--)
+    {
+      monsters.get(i).drawMonster();
+    }
+
+    if (monsters.size() == 0)
+    {
+      lvlclear = true;
+    }
+
+    if (lvlclear)
+    {
+      nextlvl++;
+      gameComplete++;
+      lvlclear = false;
+    }
+  } else 
   {
-    numMonster=10;
+    text("Congratulations", width/2, height/2);
   }
 }
 
@@ -146,16 +171,12 @@ void collision()
     {
       Monster M = monsters.get(j);
 
-      // if (dist(B.pos.x, B.pos.y, M.pos.x, M.pos.y) < (B.img[0].width/5 + B.img[0].height/5) + (M.zomMove[0][0].width/5 + M.zomMove[0][0].height/5))
-      if (abs(B.pos.x + B.img[0].width/2) >= abs(M.pos.x) &&
-        abs(B.pos.x) <= abs(M.pos.x + M.zomMove[0][0].width/2) &&
-        abs(B.pos.y + B.img[0].height/2) >= abs(M.pos.y) &&
-        abs(B.pos.y) <= abs(M.pos.y + M.zomMove[0][0].height/2)
+      if (abs(B.pos.x + B.img[0].width) >= abs(M.pos.x) &&
+        abs(B.pos.x) <= abs(M.pos.x + M.zomMove[0][0].width) &&
+        abs(B.pos.y + B.img[0].height) >= abs(M.pos.y) &&
+        abs(B.pos.y) <= abs(M.pos.y + M.zomMove[0][0].height)
         )
       {
-        //M.pos.y(B.size/2) + M.size/2
-        // println(B.pos.dist(M.pos), dist(B.pos.x, B.pos.y, M.pos.x, M.pos.y), B.pos.x, B.pos.y, M.pos.x, M.pos.y, 
-        //(B.img[0].width/5 + B.img[0].height/5) + (M.zomMove[0][0].width/5 + M.zomMove[0][0].height/5));
         monsters.remove(M);
         bullets.remove(B);
         audio[0].rewind();
