@@ -53,12 +53,5 @@ class Monster extends GameObjects
     }
 
     pos.add(0, speed);
-
-    if (spawn)
-    {
-      audio[1].rewind();
-      audio[1].play();
-      spawn = false;
-    }
   }
 }

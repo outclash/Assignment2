@@ -7,6 +7,8 @@ int[] lvl = {15, 30, 70};
 int nextlvl;
 int gameComplete;
 int cenX, cenY;
+int monNum;
+int spawntime;
 
 PImage[] menu = new PImage[4];
 PImage bg;
@@ -18,6 +20,7 @@ ArrayList<Player> player = new ArrayList<Player>();
 boolean play = false;
 boolean exit = false;
 boolean lvlclear = false;
+boolean allspawned = false;
 boolean[] keys = new boolean[512];
 
 AudioPlayer[] audio;
@@ -30,6 +33,8 @@ void setup()
   gameComplete = 0;
   cenX = width/2;
   cenY = height/2;
+  monNum = 0;
+  spawntime = 60;
 
   minim = new Minim(this);
 
@@ -172,14 +177,22 @@ void addmonsters()
 {
   if (gameComplete != lvl.length)
   {
-
-    for (int i = 0; i < lvl[nextlvl]; i++)
+    //spawn monster every spawntime 60 = 1 second...
+    if (frameCount % spawntime == 0 &&  monNum < lvl[nextlvl] )
     {
-      monsters.add(new Monster());
-
-      if (monsters.size() == lvl[nextlvl])
+      //monster sound in the start
+      if (monNum == 0)
       {
-        lvl[nextlvl] = 0;
+        audio[1].rewind();
+        audio[1].play();
+      }
+
+      monsters.add(new Monster());
+      monNum++;
+
+      if (monNum == lvl[nextlvl])
+      {
+        allspawned = true;
       }
     }
 
@@ -188,16 +201,18 @@ void addmonsters()
       monsters.get(i).render();
     }
 
-    if (monsters.size() == 0)
+    if (monsters.size() == 0 && allspawned) 
     {
+      allspawned = false;
       lvlclear = true;
-    }
-
-    if (lvlclear)
-    {
-      nextlvl++;
-      gameComplete++;
-      lvlclear = false;
+      if (lvlclear)
+      {
+        gameComplete++;
+        monNum = 0;
+        nextlvl++;
+        spawntime -= 10;
+        lvlclear = false;
+      }
     }
   }
 }
