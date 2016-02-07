@@ -11,7 +11,7 @@ class Bullet extends GameObjects
     size = 10;
   }
 
-  void drawBullet()
+  void render()
   {
     pushMatrix();
     translate(pos.x, pos.y);
@@ -19,10 +19,10 @@ class Bullet extends GameObjects
     image(img[0], -img[0].width/2, -img[0].height/2);
     popMatrix();
 
-    bulletfired();
+    update();
   }
 
-  void bulletfired()
+  void update()
   {
     MoveObj.x = sin(angle);
     MoveObj.y = -cos(angle);

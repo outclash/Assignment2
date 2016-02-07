@@ -1,5 +1,6 @@
-class GameObjects
+abstract class GameObjects
 {
+  int lives;
   float x, y;
   float angle;
   float speed;
@@ -7,7 +8,6 @@ class GameObjects
   PVector MoveObj;
   PImage[] img;
   boolean spawn;
-  AudioPlayer[] audio;
 
   GameObjects()
   {
@@ -15,12 +15,12 @@ class GameObjects
     y = 475;
     angle = 0;
     speed = 0;
-    spawn = false;
+    spawn = true;
     pos = new PVector(x, y);
     MoveObj = new PVector(0, 0);
-    audio = new AudioPlayer[5];
-
-    //audio[0] = minim.loadFile("Sound/TankFiring-SoundBible.com-998264747.wav");
-    // audio[1] = minim.loadFile("Sound/Zombie Moan-SoundBible.com-565291980.wav");
   }
+  
+  abstract void update();  
+  abstract void render();
+  
 }

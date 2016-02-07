@@ -5,6 +5,7 @@ class Player extends GameObjects
 
   Player()
   {
+    lives = 15;
     speed = 3;
     bulletInterval = 35;
     fireguideline = -1000;
@@ -14,7 +15,7 @@ class Player extends GameObjects
     img[1] = loadImage("weapon.png");
   }
 
-  void drawPlayer()
+  void render()
   {
     pushMatrix();
     translate(pos.x, pos.y);
@@ -25,11 +26,14 @@ class Player extends GameObjects
     line(0, 0, angle, fireguideline);
     image(img[1], -img[1].width/2, -img[1].height+20);
     popMatrix();
-
-    movePlayer();
+    
+    textSize(10);
+    text("Health: " + lives, 150, 540);
+   
+    update();
   }
 
-  void movePlayer()
+  void update()
   {
     if (keys['A'])
     {
@@ -51,7 +55,7 @@ class Player extends GameObjects
       angle += 0.01;
     }
 
-    if (keys[' '] && bulletInterval > 10)
+    if (keys[' '] && bulletInterval > 30)
     {
       Bullet bullet = new Bullet();
       bullet.pos.x = pos.x;
