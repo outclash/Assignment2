@@ -65,6 +65,12 @@ void draw()
 
   if (play)
   {
+    if(frameCount < 300)
+    {
+      textSize(25);
+      text("Shoot all monsters and \ndont let them pass the border!", 90,200);
+    }
+    
     tint(255, 126);
     image(menu[3], 400, 523, menu[2].width, 25);
 
