@@ -23,7 +23,7 @@ class Monster extends GameObjects
     {
       zomMove[0][i] = img[0].get( 0 + (32 * i), 0, 32, 34);
     }
-
+    
     changeFrame = 0;
     speed=random(0, 0.7);
     size = 15;
@@ -37,6 +37,7 @@ class Monster extends GameObjects
     pushMatrix();
     translate(pos.x, pos.y);
     image (zomMove[0][(int)changeFrame], -zomMove[0][0].width/2, -zomMove[0][0].height/2);
+    textSize(10);   
     text(lives, 0, zomMove[0][0].height/2);
     popMatrix();
 
@@ -45,13 +46,24 @@ class Monster extends GameObjects
 
   void update()
   {  
+    if(nextlvl == 1)
+    {
+      speed=random(0.4, 0.8);
+    }
+    
+    if(nextlvl == 2)
+    {       
+      speed=random(0.6, 0.95);
+    }
+    
     //animation frames rotation
     changeFrame = (changeFrame + .05) % 2;
     if (changeFrame > 2 )
     {
       changeFrame = 0;
     }
-
+    
     pos.add(0, speed);
+    
   }
 }

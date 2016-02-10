@@ -3,7 +3,7 @@ Minim minim;
 
 int score;
 //number of monsters per level
-int[] lvl = {15, 30, 70};
+int[] lvl = {15, 30, 50};
 int nextlvl;
 int gameComplete;
 int cenX, cenY;
@@ -49,7 +49,7 @@ void setup()
   //load background and menu images
   bg = loadImage("6dbfe6d75bf2051b5cf5e3079ce89f8d copy.png");
   bg.resize(width, height);
-  menu[0] = loadImage("Gamemenu.png");
+  menu[0] = loadImage("Gamemenu.png"); //loading the image contains play,exit,menu = menu[1],menu[2],menu[3] respectively
   for (int i = 1; i < 4; i++)
   {
     menu[i] = menu[0].get(0, 0 + (40 * (i-1)), 80, 40  );
@@ -65,12 +65,12 @@ void draw()
 
   if (play)
   {
-    if(frameCount < 300)
+    if (frameCount < 420)
     {
-      textSize(25);
-      text("Shoot all monsters and \ndont let them pass the border!", 90,200);
+      textSize(15);
+      text("Shoot all monsters and \ndont let them pass the border!\n\nUse A and D to move left or right\nJ and K to move guide line left or right\nSpace to shoot ", 90, 200);
     }
-    
+
     tint(255, 126);
     image(menu[3], 400, 523, menu[2].width, 25);
 
@@ -103,6 +103,7 @@ void draw()
     collision();
     textSize(10);
     text("Score: " + score, 10, 540 );
+    text("Level: "  + (nextlvl + 1), 300, 540);
   }
 
   //player is dead
@@ -140,7 +141,7 @@ void gameMenu()
     tint(255, 126);
     image(menu[1], cenX -menu[1].width/2, cenY -50 -menu[1].height/2);
     image(menu[2], cenX -menu[2].width/2, cenY  -menu[1].height/2);
-
+    
     if (mouseX > cenX -menu[1].width/2 &&
       mouseY > cenY -50 -menu[1].height/2 &&
       mouseX < cenX -menu[1].width/2 + menu[1].width &&
